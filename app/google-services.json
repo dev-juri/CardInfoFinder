@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "404424907711",
+    "project_id": "cardinfofinder-3a887",
+    "storage_bucket": "cardinfofinder-3a887.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404424907711:android:a62b04e497bd8416e89f0a",
+        "android_client_info": {
+          "package_name": "com.oluwafemi.cardinfofinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404424907711-m9vo9qt7oahgc70rr2lurt8l2lbj20vp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg_ZGq9lpnxreOoeehiLxs9egIW16_eYA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404424907711-m9vo9qt7oahgc70rr2lurt8l2lbj20vp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

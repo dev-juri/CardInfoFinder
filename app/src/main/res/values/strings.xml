@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">CardInfoFinder</string>
+    <string name="card_number">Card Number</string>
+    <string name="card_image">Card Image</string>
+    <string name="fetch_card_details">Fetch Card Details</string>
+</resources>
