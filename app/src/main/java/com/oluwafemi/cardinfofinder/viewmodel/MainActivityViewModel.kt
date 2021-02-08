@@ -7,6 +7,9 @@ import com.oluwafemi.cardinfofinder.repository.RepositoryImpl
 import com.oluwafemi.cardinfofinder.util.Result
 import kotlinx.coroutines.launch
 
+/*
+* CLass for state management for the UI to observe
+* */
 enum class DataState {
     SUCCESS, ERROR, LOADING
 }
@@ -21,6 +24,8 @@ class MainActivityViewModel(private val repository: RepositoryImpl) : ViewModel(
     val cardDetails: LiveData<CardDetails>
         get() = _cardDetails
 
+
+    /*accepts a userInput @param or type Long, and pass it to the getCardDetails func from the Repository*/
     fun fetchDetails(userInput: Long) {
         _dataState.value = DataState.LOADING
         viewModelScope.launch {

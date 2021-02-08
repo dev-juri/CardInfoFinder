@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -28,16 +29,19 @@ import com.oluwafemi.cardinfofinder.viewmodel.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var permissionToUseCameraAccepted = false
 
+    private var permissionToUseCameraAccepted = false
     private var permissions: Array<String> = arrayOf(android.Manifest.permission.CAMERA)
     private val REQUEST_IMAGE_CAPTURE = 1
+
     private lateinit var imageBitmap: Bitmap
+
     private val repository = RepositoryImpl()
     private val viewModel: MainActivityViewModel by viewModels {
         MainActivityViewModel.ViewModelFactory(repository)
     }
 
+    /*Get the result of the permission request, if permission is granted, launch the camera*/
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -74,6 +78,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        /*check the permission when the capture button is clicked*/
         binding.scanCard.setOnClickListener {
             if (checkSelfPermission("android.Manifest.permission.CAMERA") != PackageManager.PERMISSION_GRANTED) {
                 requestPermission()
@@ -82,6 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        /*Attach a TextWatcher object to teh edittext, and make API request once the number is a 16digit number*/
         binding.cardNumber.editText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -102,21 +108,22 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        /*Observe the DataState class and toggle progressbar visibilty*/
         viewModel.dataState.observe(this, { state ->
             when (state) {
                 DataState.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
-                    binding.cardNumber.isClickable = true
-                    binding.cardNumber.isFocusable = true
+                    binding.cardNumber.editText?.isClickable = true
+                    binding.cardNumber.editText?.isFocusable = true
                     binding.bottomSheet.visibility = View.VISIBLE
                 }
                 DataState.ERROR -> {
                     binding.progressBar.visibility = View.GONE
-                    binding.cardNumber.isClickable = true
-                    binding.cardNumber.isFocusable = true
+                    binding.cardNumber.editText?.isClickable = true
+                    binding.cardNumber.editText?.isFocusable = true
                     binding.bottomSheet.visibility = View.GONE
                     Snackbar.make(
-                        binding.progressBar,
+                        binding.cardNumber,
                         "Something went wrong",
                         Snackbar.LENGTH_SHORT
                     )
@@ -125,12 +132,13 @@ class MainActivity : AppCompatActivity() {
                 else -> {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.bottomSheet.visibility = View.GONE
-                    binding.cardNumber.isClickable = false
-                    binding.cardNumber.isFocusable = false
+                    binding.cardNumber.editText?.isClickable = false
+                    binding.cardNumber.editText?.isFocusable = false
                 }
             }
         })
 
+        /*Populate UI with the data*/
         viewModel.cardDetails.observe(this, {
             binding.cardBrand.text = "Card Type: ${it.cardName}"
             binding.cardBank.text = "Bank: ${it.bankName}"
@@ -139,6 +147,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /*Launch the phone's camera*/
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
@@ -164,21 +173,26 @@ class MainActivity : AppCompatActivity() {
                 val resultText = visionText.text
                 for (block in visionText.textBlocks) {
                     val blockText = block.text
-/*                    val blockCornerPoints = block.cornerPoints
-                    val blockFrame = block.boundingBox*/
+
                     for (line in block.lines) {
                         val lineText = line.text
-/*                        val lineCornerPoints = line.cornerPoints
-                        val lineFrame = line.boundingBox*/
+
                         if (lineText.length == 16) {
                             binding.cardNumber.editText?.apply {
                                 setText(lineText)
                             }
+                            Toast.makeText(this@MainActivity, lineText, Toast.LENGTH_SHORT).show()
                         }
                         for (element in line.elements) {
                             val elementText = element.text
-                            /*  val elementCornerPoints = element.cornerPoints
-                                val elementFrame = element.boundingBox*/
+
+                            if (elementText.length == 16) {
+                                binding.cardNumber.editText?.apply {
+                                    setText(lineText)
+                                }
+                                Toast.makeText(this@MainActivity, elementText, Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                         }
                     }
                 }

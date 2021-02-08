@@ -1,7 +1,7 @@
-##Architecture
-<img src="https://github.com/dev-juri/CardInfoFinder/blob/master/images/mvvm.png"
+## Architecture
+<img src="https://github.com/dev-juri/CardInfoFinder/blob/master/images/mvvm.png"/>
 
-##Project Structure/Approach
+## Project Structure/Approach
 - ui (contains the Activity)
      * Attached a TextWatcher object to the textfield, on the afterTextChanged method, i checked if the length of the input equals 16(length of card number), hence call the function to get the card details from the viewmodel, which requires a parameter of type Long.
      * Implemented several observers to LiveData in the viewModel to:
