@@ -38,7 +38,7 @@
                     android:fontFamily="@font/roboto_bold"
                     android:inputType="number"
                     android:lineSpacingExtra="5dp"
-                    android:maxLength="16"
+                    android:maxLength="19"
                     android:padding="16dp"
                     android:textSize="20sp" />
             </com.google.android.material.textfield.TextInputLayout>

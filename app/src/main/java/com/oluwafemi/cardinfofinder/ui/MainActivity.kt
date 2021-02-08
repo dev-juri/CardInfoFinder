@@ -23,6 +23,7 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.oluwafemi.cardinfofinder.R
 import com.oluwafemi.cardinfofinder.databinding.ActivityMainBinding
 import com.oluwafemi.cardinfofinder.repository.RepositoryImpl
+import com.oluwafemi.cardinfofinder.util.isOnline
 import com.oluwafemi.cardinfofinder.viewmodel.DataState
 import com.oluwafemi.cardinfofinder.viewmodel.MainActivityViewModel
 
@@ -87,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        /*Attach a TextWatcher object to teh edittext, and make API request once the number is a 16digit number*/
+        /*Attach a TextWatcher object to teh edittext, and make API request once the number is a within the range of 13-19 digit number*/
         binding.cardNumber.editText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -97,12 +98,24 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                if (p0.toString().length == 16) {
+                if (p0.toString().length in 13..19) {
                     val userInput = p0.toString().toLong()
-                    viewModel.fetchDetails(userInput)
-                    binding.cardNumber.error = ""
+
+                    when (isOnline(applicationContext)) {
+                        true -> {
+                            viewModel.fetchDetails(userInput)
+                            binding.cardNumber.error = ""
+                        }
+                        else -> {
+                            Snackbar.make(
+                                binding.cardNumber,
+                                "No Internet Connnection",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 } else {
-                    binding.cardNumber.error = "Card Number should be 16digits"
+                    binding.cardNumber.error = "Card Number should be 13 and 19digits"
                     binding.bottomSheet.visibility = View.GONE
                 }
             }
@@ -129,11 +142,15 @@ class MainActivity : AppCompatActivity() {
                     )
                         .show()
                 }
-                else -> {
+                DataState.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.bottomSheet.visibility = View.GONE
                     binding.cardNumber.editText?.isClickable = false
                     binding.cardNumber.editText?.isFocusable = false
+                }
+                else -> {
+                    binding.cardNumber.editText?.isClickable = true
+                    binding.cardNumber.editText?.isFocusable = true
                 }
             }
         })
@@ -170,14 +187,13 @@ class MainActivity : AppCompatActivity() {
 
         recognizer.process(InputImage.fromBitmap(inputBitmap, 0))
             .addOnSuccessListener { visionText ->
-                val resultText = visionText.text
+
                 for (block in visionText.textBlocks) {
-                    val blockText = block.text
 
                     for (line in block.lines) {
                         val lineText = line.text
 
-                        if (lineText.length == 16) {
+                        if (lineText.length in 13..19) {
                             binding.cardNumber.editText?.apply {
                                 setText(lineText)
                             }
@@ -186,7 +202,7 @@ class MainActivity : AppCompatActivity() {
                         for (element in line.elements) {
                             val elementText = element.text
 
-                            if (elementText.length == 16) {
+                            if (elementText.length in 13..19) {
                                 binding.cardNumber.editText?.apply {
                                     setText(lineText)
                                 }
