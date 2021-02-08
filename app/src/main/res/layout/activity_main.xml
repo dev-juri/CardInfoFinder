@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:hint="@string/card_number"
+
                 app:boxCornerRadiusBottomEnd="5dp"
                 app:boxCornerRadiusBottomStart="5dp"
                 app:boxCornerRadiusTopEnd="5dp"
@@ -35,6 +36,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/card_number_edit_text"
                     android:fontFamily="@font/roboto_bold"
                     android:inputType="number"
                     android:lineSpacingExtra="5dp"

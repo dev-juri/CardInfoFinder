@@ -23,6 +23,7 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.oluwafemi.cardinfofinder.R
 import com.oluwafemi.cardinfofinder.databinding.ActivityMainBinding
 import com.oluwafemi.cardinfofinder.repository.RepositoryImpl
+import com.oluwafemi.cardinfofinder.util.checkIfStringIsANumber
 import com.oluwafemi.cardinfofinder.util.isOnline
 import com.oluwafemi.cardinfofinder.viewmodel.DataState
 import com.oluwafemi.cardinfofinder.viewmodel.MainActivityViewModel
@@ -132,8 +133,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 DataState.ERROR -> {
                     binding.progressBar.visibility = View.GONE
-                    binding.cardNumber.editText?.isClickable = true
-                    binding.cardNumber.editText?.isFocusable = true
                     binding.bottomSheet.visibility = View.GONE
                     Snackbar.make(
                         binding.cardNumber,
@@ -142,15 +141,9 @@ class MainActivity : AppCompatActivity() {
                     )
                         .show()
                 }
-                DataState.LOADING -> {
+                else -> {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.bottomSheet.visibility = View.GONE
-                    binding.cardNumber.editText?.isClickable = false
-                    binding.cardNumber.editText?.isFocusable = false
-                }
-                else -> {
-                    binding.cardNumber.editText?.isClickable = true
-                    binding.cardNumber.editText?.isFocusable = true
                 }
             }
         })
@@ -193,20 +186,20 @@ class MainActivity : AppCompatActivity() {
                     for (line in block.lines) {
                         val lineText = line.text
 
-                        if (lineText.length in 13..19) {
+                        if (checkIfStringIsANumber(lineText) && lineText.length in 13..19) {
                             binding.cardNumber.editText?.apply {
                                 setText(lineText)
                             }
-                            Toast.makeText(this@MainActivity, lineText, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, lineText, Toast.LENGTH_SHORT)
+                                .show()
                         }
                         for (element in line.elements) {
                             val elementText = element.text
-
-                            if (elementText.length in 13..19) {
+                            if (checkIfStringIsANumber(elementText) && lineText.length in 13..19) {
                                 binding.cardNumber.editText?.apply {
                                     setText(lineText)
                                 }
-                                Toast.makeText(this@MainActivity, elementText, Toast.LENGTH_SHORT)
+                                Toast.makeText(this@MainActivity, lineText, Toast.LENGTH_SHORT)
                                     .show()
                             }
                         }

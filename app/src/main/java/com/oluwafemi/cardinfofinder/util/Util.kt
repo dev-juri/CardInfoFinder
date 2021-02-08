@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.oluwafemi.cardinfofinder.domain.CardDetails
 import com.oluwafemi.cardinfofinder.network.NetworkResponse.NetworkResponse
+import java.lang.Double
 
 /*
 * Map the network response to the domain model
@@ -44,4 +45,14 @@ fun isOnline(context: Context): Boolean {
 
     }
     return false
+}
+
+fun checkIfStringIsANumber(inputString: String): Boolean {
+    var numeric = true
+    try {
+        Double.parseDouble(inputString)
+    } catch (e: NumberFormatException) {
+        numeric = false
+    }
+    return numeric
 }

@@ -29,8 +29,8 @@ class MainActivityInstrumentedTest {
     }
 
     @Test
-    fun textInputField() {
-        Espresso.onView(ViewMatchers.withId(R.id.card_number))
+    fun textInputFieldTest() {
+        Espresso.onView(ViewMatchers.withId(R.id.card_number_edit_text))
             .perform(ViewActions.typeText(numberToType.toString()), ViewActions.closeSoftKeyboard())
     }
 

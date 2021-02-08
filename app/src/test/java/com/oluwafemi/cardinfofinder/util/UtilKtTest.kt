@@ -48,4 +48,26 @@ class UtilKtTest {
 
         Assert.assertEquals(expectedResult, cardDetails)
     }
+
+    @Test
+    fun `check if string that is numbers, return true`() {
+        //GIVEN
+        val inputString = "1235469084994"
+        //WHEN the function is called
+        val result = checkIfStringIsANumber(inputString)
+
+        val expectedResult = true
+        Assert.assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `check if string that is numbers and text, return false`() {
+        //GIVEN
+        val inputString = "1235469a08cb4994"
+        //WHEN the function is called
+        val result = checkIfStringIsANumber(inputString)
+
+        val expectedResult = false
+        Assert.assertEquals(expectedResult, result)
+    }
 }
