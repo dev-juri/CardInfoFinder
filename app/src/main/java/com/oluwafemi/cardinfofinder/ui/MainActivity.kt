@@ -1,4 +1,4 @@
-package com.oluwafemi.cardinfofinder
+package com.oluwafemi.cardinfofinder.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
+import com.oluwafemi.cardinfofinder.R
 import com.oluwafemi.cardinfofinder.databinding.ActivityMainBinding
 import com.oluwafemi.cardinfofinder.repository.RepositoryImpl
 import com.oluwafemi.cardinfofinder.viewmodel.DataState

@@ -8,7 +8,7 @@ import com.oluwafemi.cardinfofinder.util.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RepositoryImpl() : Repository {
+class RepositoryImpl : Repository {
 
     override suspend fun getCardDetails(url: Long): Result<CardDetails> = withContext(Dispatchers.IO) {
         return@withContext try {
